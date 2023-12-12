@@ -12,9 +12,6 @@ jsonData = requests.get(url).json()
 print("Creating dataframe...")
 players = pd.DataFrame(jsonData['items'])
 
-# Columns in 'players'
-# ['id', 'uid', 'guid', 'lastName', 'fullName', 'displayName', 'shortName', 'jersey', 'active', 'firstName', 'weight', 'displayWeight', 'height', 'displayHeight', 'age', 'dateOfBirth', 'experience', 'birthPlace', 'dateOfDeath', 'hand', 'middleName', 'citizenship', 'nickname']
-
 print("Players shape:", players.shape)
 
 # Remove rows where 'active' is 'False'
@@ -93,7 +90,6 @@ for column in player_stats_df.columns:
     if player_stats_df.columns.tolist().count(column) > 1:
         print("Duplicate column:", column)
         duplicates += 1
-
 if duplicates == 0:
     print("No duplicate columns found")
 
@@ -101,24 +97,20 @@ if duplicates == 0:
 print("Filling empty cells with NaN...")
 player_stats_df = player_stats_df.fillna(value=np.nan)
 
-# get first three columns: 'fullName', 'position', 'points'
+# split the df into meta_df and stats_df
 meta_df = player_stats_df.iloc[:, :3]
-
-# get all columns except for 'fullName', 'position', 'points'
 stats_df = player_stats_df.iloc[:, 3:]
 
-# Reorder the columns of stats_df in ascending order by the number at the beginning of the column name
-# stats_df.reindex(sorted(stats_df.columns), axis=1) will sort it as a string, not as a number so 
-# it will sort as 0, 10, 11, 12, 13, 14, 1, ..., 9. To fix this, we need to sort it as a number.
+# sort columns
 print("Sorting columns...")
 stats_df = stats_df.reindex(sorted(stats_df.columns, key=lambda x: int(x.split('_')[0])), axis=1)
 
 # Combine meta_df and stats_df
 player_stats_df = pd.concat([meta_df, stats_df], axis=1)
 
-# remove empty columns
-print("Removing empty columns...")
-player_stats_df = player_stats_df.dropna(axis=1, how='all')
+# remove columns starting with "0"
+print("Removing columns starting with '0'...")
+player_stats_df = player_stats_df.loc[:, ~player_stats_df.columns.str.startswith('0')]
 
 # print the shape of the dataframe
 print("Shape of dataframe:", player_stats_df.shape)
@@ -127,40 +119,38 @@ print("Shape of dataframe:", player_stats_df.shape)
 print("Writing dataframe to csv...")
 player_stats_df.to_csv("player_stats.csv")
 
-# Split the dataset by position
-print("Splitting dataset by position...")
-datasets = player_stats_df.groupby('position')
+# # Split the dataset by position
+# print("Splitting dataset by position...")
+# datasets = player_stats_df.groupby('position')
 
-# Create a dataframe for each position
-print("Creating dataframe for each position...")
-qb_df = datasets.get_group('QB')
-rb_df = datasets.get_group('RB')
-wr_df = datasets.get_group('WR')
-te_df = datasets.get_group('TE')
-k_df = datasets.get_group('K')
+# # Create a dataframe for each position
+# print("Creating dataframe for each position...")
+# qb_df = datasets.get_group('QB')
+# rb_df = datasets.get_group('RB')
+# wr_df = datasets.get_group('WR')
+# te_df = datasets.get_group('TE')
+# k_df = datasets.get_group('K')
 
-# drop the columns with 50% or more missing values
-print("Removing columns with 50\% or more missing values...")
-qb_df = qb_df.dropna(thresh=qb_df.shape[0] * 0.1, axis=1)
-rb_df = rb_df.dropna(thresh=rb_df.shape[0] * 0.1, axis=1)
-wr_df = wr_df.dropna(thresh=wr_df.shape[0] * 0.1, axis=1)
-te_df = te_df.dropna(thresh=te_df.shape[0] * 0.1, axis=1)
-k_df = k_df.dropna(thresh=k_df.shape[0] * 0.1, axis=1)
+# # drop the columns with 50% or more missing values
+# print("Removing columns with 50\% or more missing values...")
+# qb_df = qb_df.dropna(thresh=qb_df.shape[0] * 0.1, axis=1)
+# rb_df = rb_df.dropna(thresh=rb_df.shape[0] * 0.1, axis=1)
+# wr_df = wr_df.dropna(thresh=wr_df.shape[0] * 0.1, axis=1)
+# te_df = te_df.dropna(thresh=te_df.shape[0] * 0.1, axis=1)
+# k_df = k_df.dropna(thresh=k_df.shape[0] * 0.1, axis=1)
 
-# drop the rows with 50% or more missing values
-print("Removing rows with 50\% or more missing values...")
-qb_df = qb_df.dropna(thresh=qb_df.shape[1] * 0.1, axis=0)
-rb_df = rb_df.dropna(thresh=rb_df.shape[1] * 0.1, axis=0)
-wr_df = wr_df.dropna(thresh=wr_df.shape[1] * 0.1, axis=0)
-te_df = te_df.dropna(thresh=te_df.shape[1] * 0.1, axis=0)
-k_df = k_df.dropna(thresh=k_df.shape[1] * 0.1, axis=0)
+# # drop the rows with 50% or more missing values
+# print("Removing rows with 50\% or more missing values...")
+# qb_df = qb_df.dropna(thresh=qb_df.shape[1] * 0.1, axis=0)
+# rb_df = rb_df.dropna(thresh=rb_df.shape[1] * 0.1, axis=0)
+# wr_df = wr_df.dropna(thresh=wr_df.shape[1] * 0.1, axis=0)
+# te_df = te_df.dropna(thresh=te_df.shape[1] * 0.1, axis=0)
+# k_df = k_df.dropna(thresh=k_df.shape[1] * 0.1, axis=0)
 
-# write each dataframe to a csv file
-print("Writing each dataframe to csv...")
-qb_df.to_csv("qb_stats.csv")
-rb_df.to_csv("rb_stats.csv")
-wr_df.to_csv("wr_stats.csv")
-te_df.to_csv("te_stats.csv")
-k_df.to_csv("k_stats.csv")
-
-print("Done!")
+# # write each dataframe to a csv file
+# print("Writing each dataframe to csv...")
+# qb_df.to_csv("qb_stats.csv")
+# rb_df.to_csv("rb_stats.csv")
+# wr_df.to_csv("wr_stats.csv")
+# te_df.to_csv("te_stats.csv")
+# k_df.to_csv("k_stats.csv")
