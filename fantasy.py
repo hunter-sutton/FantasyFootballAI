@@ -51,8 +51,8 @@ class Fantasy:
 
         self.league = League(
             league_id=1341300474,
-            year=2023, espn_s2='AEAIFqzKEKeftvMMu5%2F5MetKk1VGKU5rOISKN%2BJwEu8BKMxVzP%2FOm8AGrI%2FMvGVuV%2FmQJtUIaIaL1zDnI9V%2B3liyixzfXy1YaEKqoWEt5XJUiNsnh%2B%2BZC%2Ftem3B6ggHYxyDa%2B4Gf6vyLpGuAW4u75nyfW7WfVvFmCk0P6DA25Zrpsif12SEjWhydWZkE4vJt7Bd1%2BmE86GbPmGuEJvf7VeBw%2B0hRqJ%2BAF2OauDWlviY2HhkhoyR%2Ftmer7luqA7kDYd9INo%2BuZYHq2AGpnTBHhfdV',
-            swid='{4C0FA7AD-3853-46D2-BAE7-556390C16C1A}',
+            year=2023, espn_s2='',
+            swid='',
             debug=False
         )
 
