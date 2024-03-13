@@ -1,71 +1,67 @@
 # NFL Player Performance Predictor
 
-An advanced neural network project designed to predict each NFL player's performance using TensorFlow, Keras, and various data manipulation techniques.
+This project features a neural network designed to predict the performance of NFL players. Additionally, it includes tools for visualizing data from your own fantasy football league, allowing users to analyze player performance and team dynamics comprehensively.
 
 ## Overview
 
-This project attempts to forecast the performance of individual NFL players by leveraging historical player statistics. The model excludes quarterbacks ("QB") and kickers ("K") due to the unique nature of their scoring and statistics. The project comprises two primary scripts:
+`deep_net.py` - A script that processes player data and feeds it into a neural network to predict individual NFL player performance.
 
-- `make_dataset.py`: Handles data retrieval, preprocessing, and export.
-- `deep_net.py`: Defines, trains, and evaluates the neural network model using the prepared data.
+`make_dataset.py` - This script retrieves player data from ESPN and processes it into a usable format for analysis and machine learning models.
 
-## Getting Started
+`fantasy.py` - Contains the `Fantasy` class used to fetch and analyze fantasy football league data, including plotting functions for various statistical analyses.
 
-### Prerequisites
+`main.py` - A graphical user interface (GUI) application built with Tkinter for easy use of the data visualization tools provided by the `Fantasy` class.
 
-Ensure you have Python installed on your system. Additionally, you will need to install the following packages:
+## Installation
 
-- `numpy`
-- `pandas`
-- `matplotlib`
-- `tensorflow`
-- `scikit-learn`
-- `requests`
-- `tqdm`
+To run this project, you'll need Python installed on your system along with the following packages:
 
-You can install these packages using pip:
+- Tensorflow
+- Keras
+- Pandas
+- NumPy
+- Matplotlib
+- Sklearn
+- Requests
+- tqdm
+- espn_api
 
-```
-pip install numpy pandas matplotlib tensorflow scikit-learn requests tqdm
-```
+You can install all required packages using pip:
 
-### Installation
-
-1. Clone the repository to your local machine:
-
-```
-git clone https://github.com/your_github_username/NFL-Player-Performance-Predictor.git
-```
-
-2. Navigate to the cloned repository's directory:
-
-```
-cd NFL-Player-Performance-Predictor
+```sh
+pip install tensorflow keras pandas numpy matplotlib sklearn requests tqdm espn_api
 ```
 
 ## Usage
 
-To generate the dataset and train the model, follow the steps below:
+### Training the Neural Network
 
-1. **Generate the Dataset**: Run the `make_dataset.py` script to fetch and preprocess the NFL player statistics. This script outputs a `player_stats.csv` file, which serves as input for the neural network model.
+1. Prepare your data in `player_stats.csv` file within the same directory. This should include the statistics of NFL players that you want to analyze.
+2. Run `deep_net.py` to train the model based on your data.
+   ```sh
+   python deep_net.py
+   ```
 
-```
-python make_dataset.py
-```
+### Generating the Dataset
 
-2. **Train the Neural Network**: Execute the `deep_net.py` script, which reads the `player_stats.csv` file, trains the neural network model, and evaluates its performance. The script also produces a graph displaying the model's loss over epochs.
+1. Use `make_dataset.py` to retrieve and process player data from ESPN. This script saves the processed data to `player_stats.csv`, which `deep_net.py` uses for model training.
+   ```sh
+   python make_dataset.py
+   ```
 
-```
-python deep_net.py
-```
+### Fantasy Football League Analysis
 
-## How It Works
+1. Customize `league_id`, `year`, `espn_s2`, and `swid` in `fantasy.py` with your league's details.
+2. Run `main.py` to start the GUI application for visualizing data.
+   ```sh
+   python main.py
+   ```
 
-- **Data Collection**: The `make_dataset.py` script fetches player data from the ESPN API, filters inactive players, and retains relevant statistics.
-- **Data Preprocessing**: The `deep_net.py` script preprocesses the data by encoding categorical variables, scaling features, and splitting the dataset into training and test subsets.
-- **Model Training**: A Sequential model with multiple dense layers and dropout is defined and trained using the processed data.
-- **Evaluation**: The model's performance is evaluated against the test dataset to assess its predictive accuracy.
+Through the GUI, you can:
+- Plot average position ranks of starters or entire team.
+- Visualize the standard deviation of position ranks and scores.
+- Examine scores over time for all teams or a specific team.
 
 ## Contributing
 
-If you'd like to contribute to this project, please feel free to do so. Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Contributions to this project are welcome! Please feel free to fork the repository, make your changes, and submit a pull request.
