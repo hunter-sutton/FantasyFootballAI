@@ -8,7 +8,7 @@ import os
 load_dotenv()
 
 league_id = os.getenv("LEAGUE_ID")
-espn_s2 = os.getenvc("ESPN_S2")
+espn_s2 = os.getenv("ESPN_S2")
 swid = os.getenv("SWID")
 
 
