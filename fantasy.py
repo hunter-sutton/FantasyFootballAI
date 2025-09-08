@@ -1,6 +1,16 @@
 from espn_api.football import League
 from numpy import std, mean
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+league_id = os.getenv("LEAGUE_ID")
+espn_s2 = os.getenvc("ESPN_S2")
+swid = os.getenv("SWID")
+
 
 class Fantasy:
     """
@@ -50,9 +60,9 @@ class Fantasy:
     def __init__(self):
 
         self.league = League(
-            league_id=1341300474,
-            year=2023, espn_s2='',
-            swid='',
+            league_id=league_id,
+            year=2025, espn_s2=espn_s2,
+            swid=swid,
             debug=False
         )
 
